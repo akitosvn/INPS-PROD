@@ -269,24 +269,17 @@ public:
 };
 ```
 ---
-arma::mat Poly::calcSliceN(int n, arma::mat sliceNMoins1, arma::mat sliceNMoins2 , arma::mat mat1 , arma::mat mat2)
-{
 
-    arma::mat sliceN = arma::mat(sliceNMoins1.n_rows, sliceNMoins1.n_cols , arma::fill::zeros);
-    sliceN = (mat2 + (matFact1/ n)) % sliceNMoins1 - (mat1 + (matFact2/ n) % sliceNMoins2);
-    return (sliceN);
-}
 
----
 
-# Fonction `$\psi$` et polynôme d'Hermite - Pratique
 
-Voici le code de la méthode `OneDHOSolutionCalc` :
+#Calcul de la densité locale - Implémentation
+## solver.cpp - Version n°0
 
 ```c++
 arma::mat Solver::version0(arma::Col<double> rVals, arma::Col<double> zVals) {
   arma::mat result = arma::zeros(rVals.size(), zVals.size()); // number of points on r- and z- axes
-  // a and b are used to convert
+  // a and b are used to convert 
   uint a = 0;
   uint b = 0;
   // loop over all indexes
@@ -303,7 +296,7 @@ arma::mat Solver::version0(arma::Col<double> rVals, arma::Col<double> zVals) {
             for (int n_zp = 0; n_zp < basis.n_zMax(mp, np); n_zp++)
             {
               // calculate density for those indexes
-              arma::mat funcA = basis.basisFunc(m, n, n_z, zVals, rVals);
+              arma::mat funcA = basis.basisFunc( m,  n,  n_z, zVals, rVals);
               arma::mat funcB = basis.basisFunc(mp, np, n_zp, zVals, rVals);
               result += funcA % funcB * rho(a, b); // mat += mat % mat * double
               b++;
@@ -318,7 +311,6 @@ arma::mat Solver::version0(arma::Col<double> rVals, arma::Col<double> zVals) {
   return result;
 }
 ```
-
 .center[**Temps d'exécution : 2.152934s**]
 
 ---
